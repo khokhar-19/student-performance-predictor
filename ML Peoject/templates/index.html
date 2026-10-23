@@ -1,0 +1,11 @@
+{% extends 'base.html' %}{% block title %}Dashboard · EduPredict{% endblock %}
+{% block content %}
+<section class="hero"><p class="eyebrow">STUDENT PERFORMANCE ANALYTICS</p><h1>Turn learning data into <em>clearer outcomes.</em></h1><p>Explore model performance and estimate a student's final mathematics grade on a 0–20 scale.</p><a class="button" href="{{ url_for('predict') }}">Make a prediction →</a></section>
+{% if report %}
+<section class="stats"><article><span>Records analysed</span><strong>{{ report.dataset.records }}</strong><small>{{ report.dataset.source }}</small></article><article><span>Input features</span><strong>{{ report.dataset.features }}</strong><small>Academic and demographic</small></article><article><span>Best model</span><strong class="model-name">{{ report.best_model }}</strong><small>Lowest test MAE</small></article></section>
+<section class="panel"><div><p class="eyebrow">MODEL EVALUATION</p><h2>How do the models compare?</h2><p class="muted">Lower error is better. R² measures how much variation in final grades the model explains.</p></div><canvas id="comparison"></canvas></section>
+<section class="metric-grid">{% for name, score in report.metrics.items() %}<article><h3>{{ name }}</h3><dl><div><dt>MAE</dt><dd>{{ score.MAE }}</dd></div><div><dt>MSE</dt><dd>{{ score.MSE }}</dd></div><div><dt>R²</dt><dd>{{ score.R2 }}</dd></div></dl></article>{% endfor %}</section>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><script>const m={{ report.metrics|tojson }}; new Chart(document.getElementById('comparison'),{type:'bar',data:{labels:Object.keys(m),datasets:[{label:'Mean absolute error',data:Object.values(m).map(x=>x.MAE),backgroundColor:['#7c5cff','#a896ff','#d9d1ff'],borderRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});</script>
+{% else %}
+<section class="empty"><p class="eyebrow">SETUP REQUIRED</p><h2>Your dashboard is ready for data.</h2><p>Add <code>student-mat.csv</code> to this project, then run <code>python train_model.py</code>. The model comparison and dataset statistics will appear here.</p></section>
+{% endif %}{% endblock %}

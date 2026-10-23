@@ -1,0 +1,26 @@
+{
+  "best_model": "Random Forest",
+  "metrics": {
+    "Linear Regression": {
+      "MAE": 1.344,
+      "MSE": 4.49,
+      "R2": 0.781
+    },
+    "Decision Tree": {
+      "MAE": 1.093,
+      "MSE": 3.12,
+      "R2": 0.848
+    },
+    "Random Forest": {
+      "MAE": 1.041,
+      "MSE": 2.994,
+      "R2": 0.854
+    }
+  },
+  "dataset": {
+    "records": 395,
+    "features": 8,
+    "target": "G3",
+    "source": "UCI Student Performance (student-mat.csv)"
+  }
+}
